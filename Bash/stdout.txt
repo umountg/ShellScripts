@@ -1,0 +1,18 @@
+That construct sends the standard error stream (stderr) to the current location of standard output (stdout) - this currency issue appears to have been neglected by the other answers.
+
+You can redirect any output handle to another by using this method but it's most often used to channel stdout and stderr streams into a single stream for processing.
+
+Some examples are:
+
+# Look for ERROR string in both stdout and stderr.
+foo 2>&1 | grep ERROR
+
+# Run the less pager without stderr screwing up the output.
+foo 2>&1 | less
+
+# Send stdout/err to file (with append) and terminal.
+foo 2>&1 |tee /dev/tty >>outfile
+
+# Send stderr to normal location and stdout to file.
+foo >outfile1 2>&1 >outfile2
+Note that that last one will not direct stderr to outfile2 - it redirects it to what stdout was when the argument was encountered (outfile1) and then redirects stdout to outfile2.
